@@ -106,7 +106,6 @@ defmodule ConduitSQS.Poller do
   end
 
   def handle_info({:ssl_closed, _}, state) do
-    Logger.warn("ssl_closed")
     {:noreply, [], state}
   end
 end
