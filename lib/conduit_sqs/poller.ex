@@ -88,6 +88,10 @@ defmodule ConduitSQS.Poller do
     {:noreply, messages, %{state | demand: new_demand}, :hibernate}
   end
 
+  def handle_info({:ssl_closed, _}, state) do
+    {:noreply, [], state}
+  end
+
   def handle_info(:check_active, %State{broker: broker, queue: queue} = state) do
     case meta().pollers_active?(broker) do
       true ->
@@ -103,9 +107,5 @@ defmodule ConduitSQS.Poller do
 
   defp get_region(state) do
     state.subscriber_opts[:region] || state.adapter_opts[:region] || "default region"
-  end
-
-  def handle_info({:ssl_closed, _}, state) do
-    {:noreply, [], state}
   end
 end
