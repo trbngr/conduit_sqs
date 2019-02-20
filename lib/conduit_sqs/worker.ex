@@ -53,6 +53,10 @@ defmodule ConduitSQS.Worker do
     {Module.concat(broker, Adapter.Worker), name, num}
   end
 
+  def handle_info({:ssl_closed, _}, state) do
+    {:noreply, [], state}
+  end
+
   @doc false
   @impl true
   def handle_events(messages, _from, %State{broker: broker, name: name, adapter_opts: opts} = state) do
